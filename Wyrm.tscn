@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Wyrm.gd" type="Script" id=1]
+
+[node name="Wyrm" type="Polygon2D"]
+color = Color( 1, 0, 1, 1 )
+antialiased = true
+script = ExtResource( 1 )

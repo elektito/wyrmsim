@@ -8,6 +8,7 @@ export(bool) var show_debug = false
 
 var leading_node : Node2D = null
 var original_distance := 0.0
+var last_pos
 
 func _ready():
 	if leading_segment:
@@ -25,6 +26,7 @@ func _physics_process(delta):
 		follower_movement(delta)
 	else:
 		leader_movement(delta)
+	last_pos = global_position
 
 
 func leader_movement(delta):
@@ -34,7 +36,7 @@ func leader_movement(delta):
 
 
 func follower_movement(delta):
-	var leader_dir := Vector2.RIGHT.rotated(leading_node.global_rotation)
+	var leader_dir = leading_node.get_direction()
 	var target_pos : Vector2 = leading_node.global_position - original_distance * leader_dir
 	var linear_velocity = (target_pos - global_position) / delta
 	linear_velocity = linear_velocity.clamped(leading_node.speed * 1.05)
@@ -60,3 +62,10 @@ func follower_movement(delta):
 	$target.global_position = target_pos
 	$target_line.points[0] = to_local($target.global_position)
 	$target_line.points[1] = to_local(global_position)
+
+
+func get_direction() -> Vector2:
+	if last_pos == null:
+		return Vector2.RIGHT.rotated(global_rotation)
+	else:
+		return (global_position - last_pos).normalized()

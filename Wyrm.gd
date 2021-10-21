@@ -58,7 +58,7 @@ func update_poly():
 		points.append(to_local((rects[i][0] + rects[i][1]) / 2))
 	
 	# top point of the head
-	points.append(to_local(rects[0][1] + Vector2.UP*10))
+	points.append(to_local(rects[0][1] + (rects[0][1] - rects[0][2]) * 0.3))
 	
 	polygon = PoolVector2Array(points)
 

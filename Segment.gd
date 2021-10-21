@@ -39,7 +39,7 @@ func follower_movement(delta):
 	var leader_dir = leading_node.get_direction()
 	var target_pos : Vector2 = leading_node.global_position - original_distance * leader_dir
 	var linear_velocity = (target_pos - global_position) / delta
-	linear_velocity = linear_velocity.clamped(leading_node.speed * 1.05)
+	linear_velocity = linear_velocity.clamped(leading_node.speed * 1.0)
 	
 	var target_rot : float = (leading_node.global_position - global_position).angle()
 	var desired_rotation1 = fmod(target_rot - global_rotation, 2 * PI)

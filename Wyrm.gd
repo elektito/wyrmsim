@@ -1,5 +1,8 @@
 extends Polygon2D
 
+export(bool) var show_debug := false
+var rects := []
+
 func _ready():
 	update_poly()
 
@@ -11,11 +14,21 @@ func _draw():
 	for i in range(1 , poly.size()):
 		draw_line(poly[i-1] , poly[i], outline_color, outline_width, true)
 	draw_line(poly[poly.size() - 1] , poly[0], outline_color, outline_width)
+	
+	if show_debug:
+		# draw debug rects
+		for r in rects:
+			for j in len(r):
+				r[j] = to_local(r[j])
+			draw_line(r[0], r[1], Color.red, 2, true)
+			draw_line(r[1], r[2], Color.red, 2, true)
+			draw_line(r[2], r[3], Color.red, 2, true)
+			draw_line(r[3], r[0], Color.red, 2, true)
 
 
 func update_poly():
 	# construct a rectangle for each segment (each rectangle is an array of four points)
-	var rects := []
+	rects = []
 	for child in get_children():
 		var width = child.get_node('rect').rect_size.x
 		var height = child.get_node('rect').rect_size.y

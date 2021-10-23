@@ -10,7 +10,7 @@ var leading_node : Node2D = null
 var original_distance := 0.0
 var last_pos
 
-func init():
+func _ready():
 	if leading_segment:
 		leading_node = get_node(leading_segment)
 		original_distance = (leading_node.global_position - global_position).length()

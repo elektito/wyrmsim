@@ -1,13 +1,10 @@
 extends Polygon2D
 
-const CHILD_DISTANCE := 10
-
 export(bool) var show_debug := false
 var rects := []
 
 func _ready():
 	update_poly()
-	arrange_children()
 
 
 func _draw():
@@ -64,18 +61,6 @@ func update_poly():
 	points.append(to_local(rects[0][1] + (rects[0][1] - rects[0][2]) * 0.3))
 	
 	polygon = PoolVector2Array(points)
-
-
-func arrange_children():
-	var children := get_children()
-	var prev_child
-	for i in range(len(children)):
-		var child = get_child(i)
-		if i != 0:
-			child.position.x = prev_child.position.x - prev_child.get_node('rect').rect_size.x - CHILD_DISTANCE
-			child.position.y = prev_child.position.y
-		child.init()
-		prev_child = child
 
 
 func _physics_process(delta):

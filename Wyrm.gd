@@ -29,7 +29,7 @@ func _draw():
 func update_poly():
 	# construct a rectangle for each segment (each rectangle is an array of four points)
 	rects = []
-	for child in get_children():
+	for child in get_segments():
 		var width = child.get_node('rect').rect_size.x
 		var height = child.get_node('rect').rect_size.y
 		var growth = 1.8
@@ -61,6 +61,14 @@ func update_poly():
 	points.append(to_local(rects[0][1] + (rects[0][1] - rects[0][2]) * 0.3))
 	
 	polygon = PoolVector2Array(points)
+
+
+func get_segments():
+	var segments := []
+	for child in get_children():
+		if child.get_filename() == preload("res://Segment.tscn").get_path():
+			segments.append(child)
+	return segments
 
 
 func _physics_process(delta):

@@ -9,6 +9,7 @@ export(bool) var show_debug = false
 var leading_node : Node2D = null
 var original_distance := 0.0
 var last_pos
+var last_dir
 
 func _ready():
 	if leading_segment:
@@ -26,6 +27,8 @@ func _physics_process(delta):
 		follower_movement(delta)
 	else:
 		leader_movement(delta)
+	if last_pos != null:
+		last_dir = (global_position - last_pos).normalized()
 	last_pos = global_position
 
 
@@ -65,7 +68,7 @@ func follower_movement(delta):
 
 
 func get_direction() -> Vector2:
-	if last_pos == null:
+	if last_dir == null:
 		return Vector2.RIGHT.rotated(global_rotation)
 	else:
-		return (global_position - last_pos).normalized()
+		return last_dir

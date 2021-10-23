@@ -13,7 +13,7 @@ func _draw():
 	var poly = polygon
 	for i in range(1 , poly.size()):
 		draw_line(poly[i-1] , poly[i], outline_color, outline_width, true)
-	draw_line(poly[poly.size() - 1] , poly[0], outline_color, outline_width)
+	draw_line(poly[poly.size() - 1] , poly[0], outline_color, outline_width, true)
 	
 	if show_debug:
 		# draw debug rects

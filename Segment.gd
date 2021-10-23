@@ -15,6 +15,8 @@ func _ready():
 		original_distance = (leading_node.global_position - global_position).length()
 		$target.visible = show_debug
 		$target_line.visible = show_debug
+		position.y = leading_node.position.y
+		position.x = leading_node.position.x - 60
 	else:
 		$target.visible = false
 		$target_line.visible = false

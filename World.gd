@@ -2,6 +2,8 @@ extends Node2D
 
 const ROT_SPEED := 1.5
 
+onready var camera := $Wyrm/Segment1/camera
+
 func _ready():
 	randomize()
 	var x = 0
@@ -40,9 +42,9 @@ func _input(event):
 		var last_segment = $Wyrm.get_segments()[-1]
 		$Wyrm.remove_child(last_segment)
 	if Input.is_action_just_pressed("zoom_in"):
-		$camera.zoom -= Vector2(0.1, 0.1)
+		camera.zoom -= Vector2(0.1, 0.1)
 	if Input.is_action_just_pressed("zoom_out"):
-		$camera.zoom += Vector2(0.1, 0.1)
+		camera.zoom += Vector2(0.1, 0.1)
 
 
 func _physics_process(delta):
@@ -72,7 +74,3 @@ func _physics_process(delta):
 			$Wyrm/Segment1.global_rotation = dir.angle()
 		else:
 			$Wyrm/Segment1.rotate(desired_rotation_speed * delta)
-
-
-func _process(delta):
-	$camera.global_position = $Wyrm/Segment1.global_position

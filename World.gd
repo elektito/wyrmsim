@@ -2,6 +2,25 @@ extends Node2D
 
 const ROT_SPEED := 1.5
 
+func _ready():
+	randomize()
+	var x = 0
+	for i in range(1000):
+		var b = preload("res://Building.tscn").instance()
+		b.fill_rate = 0.06
+		b.outline_width = 3
+		b.outline_color = Color(0.2, 0.2, 0.2)
+		b.window_margin = 5
+		var windows = 4 + randi() % 10
+		var floors = 5 + randi() % 100
+		var width = windows * 10 + 3 * 2 + (windows + 1) * 2
+		var height  = floors * 10 + 3 * 2 + (floors + 1) * 2
+		var y = 1080 - height
+		b.rect_position = Vector2(x, y)
+		b.rect_size = Vector2(width, height)
+		x += width - b.outline_width
+		add_child(b)
+
 func _input(event):
 	if Input.is_action_just_pressed("pause"):
 		if get_tree().paused:

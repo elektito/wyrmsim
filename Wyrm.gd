@@ -8,7 +8,7 @@ func _ready():
 
 
 func _draw():
-	var outline_color := Color.black
+	var outline_color := Color.white
 	var outline_width := 4.0
 	var poly = polygon
 	for i in range(1 , poly.size()):

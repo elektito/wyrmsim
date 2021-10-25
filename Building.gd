@@ -66,6 +66,14 @@ func init():
 						windows[f][w] = true
 						total_lit += 1
 	
+	# sometimes empty out columns of windows to suggest vertical windowless areas
+	if randf() < 0.5:
+		var columns := randi() % 2 + 1
+		for i in range(columns):
+			var w = randi() % windows_per_floor
+			for f in range(floors):
+				windows[f][w] = false
+	
 	# redraw
 	update()
 
@@ -75,11 +83,12 @@ func _draw():
 	draw_rect(rect, background_color, true)
 	draw_rect(rect, outline_color, false, outline_width, antialiased)
 	for f in range(floors):
+		var darkness = rand_range(0.0, 1.0)
 		for w in range(windows_per_floor):
 			if windows[f][w]:
 				var pos = Vector2(outline_width + window_margin + w * (window_width + window_margin), outline_width + floor_margin + f * (floor_height + floor_margin))
 				var r = Rect2(pos, Vector2(window_width, floor_height))
-				draw_rect(r, window_color, true)
+				draw_rect(r, window_color.darkened(darkness), true)
 
 
 func _on_Building_resized():

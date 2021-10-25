@@ -7,7 +7,7 @@ func _ready():
 	var x = 0
 	for i in range(1000):
 		var b = preload("res://Building.tscn").instance()
-		b.fill_rate = 0.06
+		b.fill_rate = rand_range(0.04, 0.5)
 		b.outline_width = 3
 		b.outline_color = Color(0.2, 0.2, 0.2)
 		b.window_margin = 5

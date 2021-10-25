@@ -31,6 +31,18 @@ func _input(event):
 			$Wyrm.pause_mode = Node.PAUSE_MODE_STOP
 			pause_mode = Node.PAUSE_MODE_PROCESS
 			get_tree().paused = true
+	if Input.is_action_just_pressed("add_segment"):
+		var segments = $Wyrm.get_segments()
+		var new_segment = segments[-1].duplicate()
+		new_segment.leading_segment = segments[-1].get_path()
+		$Wyrm.add_child(new_segment)
+	if Input.is_action_just_pressed("remove_segment"):
+		var last_segment = $Wyrm.get_segments()[-1]
+		$Wyrm.remove_child(last_segment)
+	if Input.is_action_just_pressed("zoom_in"):
+		$camera.zoom -= Vector2(0.1, 0.1)
+	if Input.is_action_just_pressed("zoom_out"):
+		$camera.zoom += Vector2(0.1, 0.1)
 
 
 func _physics_process(delta):
@@ -60,3 +72,7 @@ func _physics_process(delta):
 			$Wyrm/Segment1.global_rotation = dir.angle()
 		else:
 			$Wyrm/Segment1.rotate(desired_rotation_speed * delta)
+
+
+func _process(delta):
+	$camera.global_position = $Wyrm/Segment1.global_position

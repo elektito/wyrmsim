@@ -18,6 +18,7 @@ speed = 500.0
 [node name="camera" type="Camera2D" parent="Wyrm/Segment1"]
 scale = Vector2( 2, 2 )
 current = true
+zoom = Vector2( 2, 2 )
 limit_bottom = 1080
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true

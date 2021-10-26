@@ -12,6 +12,8 @@ export(float) var window_margin := 2.0 setget set_window_margin
 export(float) var floor_height := 10.0 setget set_floor_height
 export(float) var floor_margin := 2.0 setget set_floor_margin
 
+export(int) var rng_seed := 0
+
 export(float, 0.0, 1.0, 0.01) var fill_rate := 0.2 setget set_fill_rate
 
 var windows_per_floor : int
@@ -21,11 +23,15 @@ var darkness := []
 
 var initialized := false
 
+var rng = RandomNumberGenerator.new()
+
 func _ready():
 	init()
 
 
 func init():
+	rng.seed = rng_seed
+	
 	floors = int(floor((rect_size.y - 2 * outline_width - 1 * floor_margin) / (floor_height + floor_margin)))
 	windows_per_floor = int(floor((rect_size.x - 2 * outline_width - 1 * window_margin) / (window_width + window_margin)))
 	
@@ -42,7 +48,7 @@ func init():
 	var total_lit := 0
 	for f in range(floors):
 		var cur_fill_rate = float(total_lit) / (windows_per_floor * (f + 1))
-		var style = randf()
+		var style = rng.randf()
 		if cur_fill_rate < fill_rate:
 			if style < 0.1:
 				# one whole lit floor
@@ -51,16 +57,16 @@ func init():
 				total_lit += windows_per_floor
 			elif style < 0.2:
 				# one string of lit windows
-				var length = randi() % windows_per_floor
-				var start = randi() % (windows_per_floor - length)
+				var length = rng.randi() % windows_per_floor
+				var start = rng.randi() % (windows_per_floor - length)
 				for i in range(length):
 					windows[f][start + i] = true
 				total_lit += length
 			elif style < 0.5:
 				var filled := 0
 				for x in range(2):
-					var length = randi() % (windows_per_floor - filled)
-					var start = randi() % (windows_per_floor - filled - length)
+					var length = rng.randi() % (windows_per_floor - filled)
+					var start = rng.randi() % (windows_per_floor - filled - length)
 					for i in range(length):
 						windows[f][filled + start + i] = true
 					filled += length

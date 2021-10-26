@@ -17,6 +17,7 @@ export(float, 0.0, 1.0, 0.01) var fill_rate := 0.2 setget set_fill_rate
 var windows_per_floor : int
 var floors : int
 var windows := []
+var darkness := []
 
 func _ready():
 	init()
@@ -27,10 +28,13 @@ func init():
 	windows_per_floor = int(floor((rect_size.x - 2 * outline_width - 1 * window_margin) / (window_width + window_margin)))
 	
 	windows = []
+	darkness = []
 	for i in range(floors):
 		windows.append([])
+		darkness.append([])
 		for j in range(windows_per_floor):
 			windows[i].append(false)
+			darkness[i].append(rng.randf_range(0.0, 1.0))
 	
 	# now turn on some of the lights
 	var total_lit := 0
@@ -91,12 +95,11 @@ func _draw():
 	draw_rect(rect, background_color, true)
 	draw_rect(rect, outline_color, false, outline_width, antialiased)
 	for f in range(floors):
-		var darkness = rand_range(0.0, 1.0)
 		for w in range(windows_per_floor):
 			if windows[f][w]:
 				var pos = Vector2(outline_width + window_margin + w * (window_width + window_margin), outline_width + floor_margin + f * (floor_height + floor_margin))
 				var r = Rect2(pos, Vector2(window_width, floor_height))
-				draw_rect(r, window_color.darkened(darkness), true)
+				draw_rect(r, window_color.darkened(darkness[f][w]), true)
 
 
 func _on_Building_resized():

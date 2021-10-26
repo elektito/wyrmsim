@@ -74,6 +74,14 @@ func init():
 			for f in range(floors):
 				windows[f][w] = false
 	
+	# empty out one or more rows at the bottom
+	var bottom_rows = 1
+	if floors > 7:
+		bottom_rows = randi() % 4 + 1
+	for i in range(bottom_rows):
+		for w in windows_per_floor:
+			windows[floors - 1 - i][w] = false
+	
 	# redraw
 	update()
 

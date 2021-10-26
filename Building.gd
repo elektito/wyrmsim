@@ -19,6 +19,8 @@ var floors : int
 var windows := []
 var darkness := []
 
+var initialized := false
+
 func _ready():
 	init()
 
@@ -66,31 +68,35 @@ func init():
 			else:
 				# some individual lit windows
 				for w in range(windows_per_floor):
-					if randf() < fill_rate:
+					if rng.randf() < fill_rate:
 						windows[f][w] = true
 						total_lit += 1
 	
 	# sometimes empty out columns of windows to suggest vertical windowless areas
-	if randf() < 0.5:
-		var columns := randi() % 2 + 1
+	if rng.randf() < 0.5:
+		var columns : int = rng.randi() % 2 + 1
 		for i in range(columns):
-			var w = randi() % windows_per_floor
+			var w = rng.randi() % windows_per_floor
 			for f in range(floors):
 				windows[f][w] = false
 	
 	# empty out one or more rows at the bottom
 	var bottom_rows = 1
 	if floors > 7:
-		bottom_rows = randi() % 4 + 1
+		bottom_rows = rng.randi() % 4 + 1
 	for i in range(bottom_rows):
 		for w in windows_per_floor:
 			windows[floors - 1 - i][w] = false
+	
+	initialized = true
 	
 	# redraw
 	update()
 
 
 func _draw():
+	if not initialized:
+		return
 	var rect = Rect2(outline_width / 2, outline_width / 2, rect_size.x - outline_width, rect_size.y - outline_width)
 	draw_rect(rect, background_color, true)
 	draw_rect(rect, outline_color, false, outline_width, antialiased)

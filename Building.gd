@@ -103,13 +103,18 @@ func init():
 func _draw():
 	if not initialized:
 		return
+	
 	var rect = Rect2(outline_width / 2, outline_width / 2, rect_size.x - outline_width, rect_size.y - outline_width)
 	draw_rect(rect, background_color, true)
 	draw_rect(rect, outline_color, false, outline_width, antialiased)
+	
+	var first_window_x = outline_width + (rect_size.x - 2.0 * outline_width - windows_per_floor * window_width - (windows_per_floor - 1) * window_margin) / 2.0
+	var first_window_y = outline_width + (rect_size.y - 2.0 * outline_width - floors * floor_height - (floors - 1) * floor_margin) / 2.0
+	
 	for f in range(floors):
 		for w in range(windows_per_floor):
 			if windows[f][w]:
-				var pos = Vector2(outline_width + window_margin + w * (window_width + window_margin), outline_width + floor_margin + f * (floor_height + floor_margin))
+				var pos = Vector2(first_window_x + w * (window_width + window_margin), first_window_y + f * (floor_height + floor_margin))
 				var r = Rect2(pos, Vector2(window_width, floor_height))
 				draw_rect(r, window_color.darkened(darkness[f][w]), true)
 

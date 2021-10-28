@@ -12,7 +12,7 @@ export(float) var window_margin := 2.0 setget set_window_margin
 export(float) var floor_height := 10.0 setget set_floor_height
 export(float) var floor_margin := 2.0 setget set_floor_margin
 
-export(int) var rng_seed := 0
+export(int) var rng_seed := 0 setget set_rng_seed
 
 export(float, 0.0, 1.0, 0.01) var fill_rate := 0.2 setget set_fill_rate
 
@@ -161,3 +161,8 @@ func set_window_color(value: Color):
 func set_background_color(value: Color):
 	background_color = value
 	update()
+
+
+func set_rng_seed(value: int):
+	rng_seed = value
+	init()

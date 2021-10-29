@@ -55,3 +55,9 @@ leading_segment = NodePath("../Segment6")
 [node name="Segment8" parent="Wyrm" instance=ExtResource( 2 )]
 position = Vector2( 34.5814, 36.6157 )
 leading_segment = NodePath("../Segment7")
+
+[node name="building_generation_timer" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
+
+[connection signal="timeout" from="building_generation_timer" to="." method="_on_building_generation_timer_timeout"]

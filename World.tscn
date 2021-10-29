@@ -63,7 +63,6 @@ autostart = true
 
 [node name="music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
-autoplay = true
 bus = "Music"
 
 [connection signal="timeout" from="building_generation_timer" to="." method="_on_building_generation_timer_timeout"]

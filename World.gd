@@ -16,6 +16,9 @@ func _ready():
 	randomize()
 	noise.seed = randi()
 	update_buildings()
+	
+	yield(get_tree().create_timer(0.75), "timeout")
+	$music.play()
 
 
 func _input(event):

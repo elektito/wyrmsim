@@ -2,7 +2,9 @@
 
 [ext_resource path="res://Building.gd" type="Script" id=1]
 
-[node name="Building" type="Control"]
+[node name="Building" type="Control" groups=[
+"buildings",
+]]
 margin_right = 84.0
 margin_bottom = 102.0
 mouse_filter = 2

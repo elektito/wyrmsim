@@ -80,6 +80,10 @@ func _on_building_generation_timer_timeout():
 	update_buildings()
 
 
+func _on_collectible_collected(collectible):
+	collectible.queue_free()
+
+
 func update_buildings():
 	var x : float = to_local(camera.global_position).x
 	var blockx : float = x - fmod(x, BLOCK_SIZE)
@@ -124,6 +128,9 @@ func fill_block(bx: float):
 			width += remaining_width
 		var building = generate_building(x, width)
 		add_child(building)
+		var collectible = generate_collectible(building)
+		if collectible != null:
+			add_child(collectible)
 		x += width
 		if bx in block_buildings:
 			block_buildings[bx].append(building)
@@ -155,3 +162,12 @@ func generate_building(x: float, width: float):
 	
 	return b
 
+func generate_collectible(building):
+	var x: float = building.rect_global_position.x
+	if noise.get_noise_1d(x) < 0.2:
+		return null
+	var c = preload("res://Collectible.tscn").instance()
+	c.global_position.x = x + building.rect_size.x / 2.0
+	c.global_position.y = scrh - building.rect_size.y - 50
+	c.connect("collected", self, '_on_collectible_collected', [c])
+	return c

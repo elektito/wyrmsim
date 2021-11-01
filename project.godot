@@ -73,6 +73,11 @@ zoom_out={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="wyrm"
+2d_physics/layer_2="collectible"
+
 [physics]
 
 common/enable_pause_aware_picking=true

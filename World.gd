@@ -7,6 +7,8 @@ const BUILDING_MAX_WIDTH := 300.0
 
 onready var camera := $Wyrm/Segment1/camera
 
+onready var scrh = ProjectSettings.get('display/window/size/height')
+
 var noise = OpenSimplexNoise.new()
 var cur_blockx
 var block_buildings := {}
@@ -147,7 +149,7 @@ func generate_building(x: float, width: float):
 	b.window_margin = 5
 	var floors = 5 + rng.randi() % 100
 	var height  = floors * 10 + 3 * 2 + (floors + 1) * 2
-	var y = 1080 - height
+	var y = scrh - height
 	b.rect_position = Vector2(x, y)
 	b.rect_size = Vector2(width, height)
 	

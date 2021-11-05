@@ -34,13 +34,9 @@ func _input(event):
 			pause_mode = Node.PAUSE_MODE_PROCESS
 			get_tree().paused = true
 	if Input.is_action_just_pressed("add_segment"):
-		var segments = $Wyrm.get_segments()
-		var new_segment = segments[-1].duplicate()
-		new_segment.leading_segment = segments[-1].get_path()
-		$Wyrm.add_child(new_segment)
+		add_wyrm_segment()
 	if Input.is_action_just_pressed("remove_segment"):
-		var last_segment = $Wyrm.get_segments()[-1]
-		$Wyrm.remove_child(last_segment)
+		remove_wyrm_segment()
 	if Input.is_action_just_pressed("zoom_in"):
 		camera.zoom -= Vector2(0.1, 0.1)
 	if Input.is_action_just_pressed("zoom_out"):
@@ -82,6 +78,19 @@ func _on_building_generation_timer_timeout():
 
 func _on_collectible_collected(collectible):
 	collectible.queue_free()
+	add_wyrm_segment()
+
+
+func add_wyrm_segment():
+	var segments = $Wyrm.get_segments()
+	var new_segment = segments[-1].duplicate()
+	new_segment.leading_segment = segments[-1].get_path()
+	$Wyrm.add_child(new_segment)
+
+
+func remove_wyrm_segment():
+	var last_segment = $Wyrm.get_segments()[-1]
+	$Wyrm.remove_child(last_segment)
 
 
 func update_buildings():

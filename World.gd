@@ -86,13 +86,13 @@ func remove_wyrm_segment():
 	$Wyrm.remove_child(last_segment)
 
 
-func pause():
+func unpause():
 	$Wyrm.pause_mode = Node.PAUSE_MODE_INHERIT
 	pause_mode = Node.PAUSE_MODE_INHERIT
 	get_tree().paused = false
 
 
-func unpause():
+func pause():
 	$Wyrm.pause_mode = Node.PAUSE_MODE_STOP
 	pause_mode = Node.PAUSE_MODE_PROCESS
 	get_tree().paused = true
@@ -100,9 +100,9 @@ func unpause():
 
 func toggle_pause():
 	if get_tree().paused:
-		pause()
-	else:
 		unpause()
+	else:
+		pause()
 
 
 func update_buildings():

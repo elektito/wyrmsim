@@ -25,14 +25,7 @@ func _ready():
 
 func _input(event):
 	if Input.is_action_just_pressed("pause"):
-		if get_tree().paused:
-			$Wyrm.pause_mode = Node.PAUSE_MODE_INHERIT
-			pause_mode = Node.PAUSE_MODE_INHERIT
-			get_tree().paused = false
-		else:
-			$Wyrm.pause_mode = Node.PAUSE_MODE_STOP
-			pause_mode = Node.PAUSE_MODE_PROCESS
-			get_tree().paused = true
+		toggle_pause()
 	if Input.is_action_just_pressed("add_segment"):
 		add_wyrm_segment()
 	if Input.is_action_just_pressed("remove_segment"):
@@ -91,6 +84,25 @@ func add_wyrm_segment():
 func remove_wyrm_segment():
 	var last_segment = $Wyrm.get_segments()[-1]
 	$Wyrm.remove_child(last_segment)
+
+
+func pause():
+	$Wyrm.pause_mode = Node.PAUSE_MODE_INHERIT
+	pause_mode = Node.PAUSE_MODE_INHERIT
+	get_tree().paused = false
+
+
+func unpause():
+	$Wyrm.pause_mode = Node.PAUSE_MODE_STOP
+	pause_mode = Node.PAUSE_MODE_PROCESS
+	get_tree().paused = true
+
+
+func toggle_pause():
+	if get_tree().paused:
+		pause()
+	else:
+		unpause()
 
 
 func update_buildings():

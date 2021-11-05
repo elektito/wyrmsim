@@ -12,6 +12,7 @@ onready var scrh = ProjectSettings.get('display/window/size/height')
 var noise = OpenSimplexNoise.new()
 var cur_blockx
 var block_buildings := {}
+var single_stepping := false
 
 
 func _ready():
@@ -34,6 +35,8 @@ func _input(event):
 		camera.zoom -= Vector2(0.1, 0.1)
 	if Input.is_action_just_pressed("zoom_out"):
 		camera.zoom += Vector2(0.1, 0.1)
+	if Input.is_action_just_pressed("step") and get_tree().paused:
+		single_step()
 
 
 func _physics_process(delta):
@@ -63,6 +66,12 @@ func _physics_process(delta):
 			$Wyrm/Segment1.global_rotation = dir.angle()
 		else:
 			$Wyrm/Segment1.rotate(desired_rotation_speed * delta)
+
+
+func _process(delta):
+	if single_stepping:
+		pause()
+		single_stepping = false
 
 
 func _on_building_generation_timer_timeout():
@@ -103,6 +112,11 @@ func toggle_pause():
 		unpause()
 	else:
 		pause()
+
+
+func single_step():
+	unpause()
+	single_stepping =  true
 
 
 func update_buildings():

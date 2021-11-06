@@ -93,6 +93,9 @@ func add_wyrm_segment():
 	var new_segment = segments[-1].duplicate()
 	new_segment.leading_segment = segments[-1].get_path()
 	$Wyrm.add_child(new_segment)
+	yield(new_segment, "ready")
+	new_segment.global_position = segments[-1].global_position - segments[-1].get_velocity() * 0.5
+	new_segment.global_rotation = segments[-1].global_rotation
 
 
 func remove_wyrm_segment():

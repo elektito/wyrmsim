@@ -14,7 +14,6 @@ scale = Vector2( 0.5, 0.5 )
 
 [node name="Segment1" parent="Wyrm" instance=ExtResource( 2 )]
 position = Vector2( 478.85, 37.2832 )
-speed = 500.0
 
 [node name="camera" type="Camera2D" parent="Wyrm/Segment1"]
 scale = Vector2( 2, 2 )

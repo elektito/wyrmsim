@@ -4,11 +4,15 @@ const MAX_ROTATION_SPEED := PI
 const SEGMENT_DISTANCE := 20.0
 
 export(NodePath) var leading_segment
-export(float) var speed := 0.0
+export(float) var speed := 500.0
 export(bool) var show_debug = false setget set_show_debug
+export(float) var max_acceleration := 100.0
+export(float) var min_speed := 300.0
+export(float) var max_speed := 700
 
 var leading_node : Node2D = null
 var original_distance := 0.0
+var acceleration := 0.0
 
 func _ready():
 	if leading_segment:
@@ -34,6 +38,16 @@ func _physics_process(delta):
 
 func leader_movement(delta):
 	var dir = Vector2.RIGHT.rotated(rotation)
+	
+	if abs(dir.x) < 0.01 or abs(dir.y) < 0.01:
+		acceleration = -max_acceleration
+	else:
+		# you get max acceleration when moving at a multiple of 45 degrees
+		acceleration = fposmod(dir.angle(), PI / 4) / (PI / 4) * max_acceleration
+	
+	speed += acceleration * delta
+	speed = clamp(speed, min_speed, max_speed)
+	
 	var velocity = speed * dir
 	move_and_slide(velocity)
 

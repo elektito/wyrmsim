@@ -61,8 +61,8 @@ func follower_movement(delta):
 	rotate(rotation_speed * delta)
 	
 	$target.global_position = target_pos
-	$target_line.points[0] = to_local($target.global_position)
-	$target_line.points[1] = to_local(global_position)
+	$target_line.points[0] = $target_line.to_local($target.global_position)
+	$target_line.points[1] = $target_line.to_local(global_position)
 
 
 func set_show_debug(value: bool):

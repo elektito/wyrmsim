@@ -4,7 +4,7 @@ const MAX_ROTATION_SPEED := PI
 
 export(NodePath) var leading_segment
 export(float) var speed := 0.0
-export(bool) var show_debug = false
+export(bool) var show_debug = false setget set_show_debug
 
 var leading_node : Node2D = null
 var original_distance := 0.0
@@ -20,6 +20,8 @@ func _ready():
 	else:
 		$target.visible = false
 		$target_line.visible = false
+		
+	$rect.visible = show_debug
 
 
 func _physics_process(delta):
@@ -61,3 +63,10 @@ func follower_movement(delta):
 	$target.global_position = target_pos
 	$target_line.points[0] = to_local($target.global_position)
 	$target_line.points[1] = to_local(global_position)
+
+
+func set_show_debug(value: bool):
+	show_debug = value
+	$target.visible = show_debug
+	$target_line.visible = show_debug
+	$rect.visible = show_debug

@@ -37,6 +37,11 @@ func _input(event):
 		camera.zoom += Vector2(0.1, 0.1)
 	if Input.is_action_just_pressed("step") and get_tree().paused:
 		single_step()
+	if Input.is_action_just_pressed("debug"):
+		$Wyrm.show_debug = not $Wyrm.show_debug
+		for child in $Wyrm.get_children():
+			if child.get_filename() == preload("res://Segment.tscn").get_path():
+				child.show_debug = not child.show_debug
 
 
 func _physics_process(delta):

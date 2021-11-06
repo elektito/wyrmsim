@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 const MAX_ROTATION_SPEED := PI
+const SEGMENT_DISTANCE := 20.0
 
 export(NodePath) var leading_segment
 export(float) var speed := 0.0
@@ -38,7 +39,7 @@ func leader_movement(delta):
 
 
 func follower_movement(delta):
-	var target_pos : Vector2 = leading_node.global_position
+	var target_pos : Vector2 = leading_node.global_position - leading_node.get_velocity().normalized() * SEGMENT_DISTANCE
 	var linear_velocity = (target_pos - global_position) / delta
 	linear_velocity = linear_velocity.clamped(leading_node.speed * 1.0)
 	
@@ -63,6 +64,11 @@ func follower_movement(delta):
 	$target.global_position = target_pos
 	$target_line.points[0] = $target_line.to_local($target.global_position)
 	$target_line.points[1] = $target_line.to_local(global_position)
+
+
+func get_velocity() -> Vector2:
+	var dir = Vector2.RIGHT.rotated(global_rotation)
+	return speed * dir
 
 
 func set_show_debug(value: bool):

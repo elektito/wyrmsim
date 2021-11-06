@@ -4,6 +4,7 @@ signal collected()
 
 var rotation_dir := 1.0
 var rotation_speed := PI / 4
+var building_x
 
 func _ready():
 	rotation_dir = 1.0 if randf() < 0.5 else -1.0

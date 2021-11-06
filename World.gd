@@ -13,6 +13,8 @@ var noise = OpenSimplexNoise.new()
 var cur_blockx
 var block_buildings := {}
 var single_stepping := false
+var collected_collectibles := []
+var visible_collectibles := {}
 
 
 func _ready():
@@ -84,6 +86,7 @@ func _on_building_generation_timer_timeout():
 
 
 func _on_collectible_collected(collectible):
+	collected_collectibles.append(collectible.building_x)
 	collectible.queue_free()
 	add_wyrm_segment()
 
@@ -183,6 +186,9 @@ func fill_block(bx: float):
 
 func remove_block(bx):
 	for b in block_buildings[bx]:
+		var c = visible_collectibles.get(b.rect_global_position.x)
+		if c != null:
+			c.queue_free()
 		b.queue_free()
 	block_buildings.erase(bx)
 
@@ -207,10 +213,14 @@ func generate_building(x: float, width: float):
 
 func generate_collectible(building):
 	var x: float = building.rect_global_position.x
+	if x in collected_collectibles:
+		return null
 	if noise.get_noise_1d(x) < 0.2:
 		return null
 	var c = preload("res://Collectible.tscn").instance()
 	c.global_position.x = x + building.rect_size.x / 2.0
 	c.global_position.y = scrh - building.rect_size.y - 50
+	c.building_x = x
 	c.connect("collected", self, '_on_collectible_collected', [c])
+	visible_collectibles[x] = c
 	return c

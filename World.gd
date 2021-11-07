@@ -88,7 +88,6 @@ func _on_building_generation_timer_timeout():
 func _on_collectible_collected(collectible):
 	collected_collectibles.append(collectible.building_x)
 	visible_collectibles.erase(collectible.building_x)
-	collectible.queue_free()
 	add_wyrm_segment()
 
 

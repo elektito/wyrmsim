@@ -212,6 +212,7 @@ func generate_building(x: float, width: float):
 	
 	return b
 
+
 func generate_collectible(building):
 	var x: float = building.rect_global_position.x
 	if x in collected_collectibles:

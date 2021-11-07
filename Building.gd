@@ -94,6 +94,16 @@ func init():
 		for w in windows_per_floor:
 			windows[floors - 1 - i][w] = false
 	
+	# randomly turn off some whole floors
+	for i in range(0, rng.randi_range(0, fill_rate * floors)):
+		var f1 = rng.randi() % floors
+		var f2 = f1 + 1 + rng.randi_range(0, log(floors))
+		if f2 >= floors:
+			f2 = floors - 1
+		for f in range(f1, f2):
+			for w in windows_per_floor:
+				windows[f][w] = false
+	
 	initialized = true
 	
 	# redraw

@@ -20,19 +20,14 @@ func _physics_process(delta):
 
 
 func _on_Collectible_area_entered(area):
-	# make sure multiple we don't emit "collected" multiple times
-	if collected:
-		return
-	collected = true
-	
-	$sprite.visible = false
-	$particles.emitting = true
-	emit_signal('collected')
-	yield(get_tree().create_timer($particles.lifetime), "timeout")
-	queue_free()
+	collect()
 
 
 func _on_Collectible_body_entered(body):
+	collect()
+
+
+func collect():
 	# make sure multiple we don't emit "collected" multiple times
 	if collected:
 		return

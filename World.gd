@@ -95,10 +95,9 @@ func add_wyrm_segment():
 	var segments = $Wyrm.get_segments()
 	var new_segment = segments[-1].duplicate()
 	new_segment.leading_segment = segments[-1].get_path()
-	$Wyrm.add_child(new_segment)
-	yield(new_segment, "ready")
-	new_segment.global_position = segments[-1].global_position - segments[-1].get_velocity() * 0.5
-	new_segment.global_rotation = segments[-1].global_rotation
+	new_segment.position = segments[-1].position - segments[-1].get_velocity() * 0.5
+	new_segment.rotation = segments[-1].rotation
+	$Wyrm.call_deferred('add_child', new_segment)
 
 
 func remove_wyrm_segment():
@@ -213,14 +212,14 @@ func generate_building(x: float, width: float):
 
 
 func generate_collectible(building):
-	var x: float = building.rect_global_position.x
+	var x: float = building.rect_position.x
 	if x in collected_collectibles:
 		return null
 	if noise.get_noise_1d(x) < 0.2:
 		return null
 	var c = preload("res://Collectible.tscn").instance()
-	c.global_position.x = x + building.rect_size.x / 2.0
-	c.global_position.y = scrh - building.rect_size.y - 50
+	c.position.x = x + building.rect_size.x / 2.0
+	c.position.y = scrh - building.rect_size.y - 50
 	c.building_x = x
 	c.connect("collected", self, '_on_collectible_collected', [c])
 	visible_collectibles[x] = c

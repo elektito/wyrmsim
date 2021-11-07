@@ -5,6 +5,7 @@ signal collected()
 var rotation_dir := 1.0
 var rotation_speed := PI / 4
 var building_x
+var collected := false
 onready var start_phase := randf() * 1000.0
 
 func _ready():
@@ -19,6 +20,11 @@ func _physics_process(delta):
 
 
 func _on_Collectible_area_entered(area):
+	# make sure multiple we don't emit "collected" multiple times
+	if collected:
+		return
+	collected = true
+	
 	$sprite.visible = false
 	$particles.emitting = true
 	emit_signal('collected')
@@ -27,6 +33,11 @@ func _on_Collectible_area_entered(area):
 
 
 func _on_Collectible_body_entered(body):
+	# make sure multiple we don't emit "collected" multiple times
+	if collected:
+		return
+	collected = true
+	
 	$sprite.visible = false
 	$particles.emitting = true
 	emit_signal('collected')

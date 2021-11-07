@@ -16,7 +16,7 @@ func _physics_process(delta):
 	rotation += rotation_dir * rotation_speed * delta
 	var phase = abs(sin(OS.get_ticks_msec() * 0.001 + start_phase)) * 0.8 + 0.2
 	scale = Vector2(phase, phase)
-	modulate = Color.gray * phase
+	$sprite.modulate = Color.gray * phase
 
 
 func _on_Collectible_area_entered(area):

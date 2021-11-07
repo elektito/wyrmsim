@@ -20,8 +20,14 @@ func _physics_process(delta):
 
 
 func _on_Collectible_area_entered(area):
+	$sprite.visible = false
+	$particles.emitting = true
+	yield(get_tree().create_timer($particles.lifetime), "timeout")
 	emit_signal('collected')
 
 
 func _on_Collectible_body_entered(body):
+	$sprite.visible = false
+	$particles.emitting = true
+	yield(get_tree().create_timer($particles.lifetime), "timeout")
 	emit_signal('collected')

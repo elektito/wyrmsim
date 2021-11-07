@@ -33,8 +33,13 @@ func collect():
 		return
 	collected = true
 	
+	var player = $collection_sounds.get_child(randi() % $collection_sounds.get_child_count())
+	player.volume_db = linear2db(0.4)
+	player.pitch_scale = 2
+	player.play()
+	
 	$sprite.visible = false
 	$particles.emitting = true
 	emit_signal('collected')
-	yield(get_tree().create_timer($particles.lifetime), "timeout")
+	yield(player, "finished")
 	queue_free()

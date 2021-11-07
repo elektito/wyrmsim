@@ -1,7 +1,13 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/gfx/collectible.png" type="Texture" id=1]
 [ext_resource path="res://Collectible.gd" type="Script" id=2]
+[ext_resource path="res://assets/sfx/collection1.wav" type="AudioStream" id=3]
+[ext_resource path="res://assets/sfx/collection3.wav" type="AudioStream" id=4]
+[ext_resource path="res://assets/sfx/collection6.wav" type="AudioStream" id=5]
+[ext_resource path="res://assets/sfx/collection2.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/sfx/collection5.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/sfx/collection4.wav" type="AudioStream" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 31, 31 )
@@ -34,6 +40,32 @@ gravity = Vector2( 0, 0 )
 initial_velocity = 100.0
 scale_amount_curve = SubResource( 2 )
 color_ramp = SubResource( 3 )
+
+[node name="collection_sounds" type="Node" parent="."]
+
+[node name="collection_sound1" type="AudioStreamPlayer" parent="collection_sounds"]
+stream = ExtResource( 3 )
+bus = "SFX"
+
+[node name="collection_sound2" type="AudioStreamPlayer" parent="collection_sounds"]
+stream = ExtResource( 6 )
+bus = "SFX"
+
+[node name="collection_sound3" type="AudioStreamPlayer" parent="collection_sounds"]
+stream = ExtResource( 4 )
+bus = "SFX"
+
+[node name="collection_sound4" type="AudioStreamPlayer" parent="collection_sounds"]
+stream = ExtResource( 8 )
+bus = "SFX"
+
+[node name="collection_sound5" type="AudioStreamPlayer" parent="collection_sounds"]
+stream = ExtResource( 7 )
+bus = "SFX"
+
+[node name="collection_sound6" type="AudioStreamPlayer" parent="collection_sounds"]
+stream = ExtResource( 5 )
+bus = "SFX"
 
 [connection signal="area_entered" from="." to="." method="_on_Collectible_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_Collectible_body_entered"]

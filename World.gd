@@ -172,10 +172,10 @@ func fill_block(bx: float):
 			# we might go a bit above max width, but we won't have next building too narrow (and thus unrenderable)
 			width += remaining_width
 		var building = generate_building(x, width)
-		add_child(building)
+		call_deferred('add_child', building)
 		var collectible = generate_collectible(building)
 		if collectible != null:
-			add_child(collectible)
+			call_deferred('add_child', collectible)
 		x += width
 		if bx in block_buildings:
 			block_buildings[bx].append(building)

@@ -17,7 +17,8 @@ export(int) var rng_seed := 0 setget set_rng_seed
 export(float, 0.0, 1.0, 0.01) var fill_rate := 0.2 setget set_fill_rate
 
 var initialized := false
-var window_rect = null
+var window_rects := []
+var section_rects := []
 var rng = RandomNumberGenerator.new()
 
 func _ready():
@@ -28,18 +29,56 @@ func init():
 	rng.seed = rng_seed
 	initialized = true
 	
-	if window_rect != null:
-		window_rect.queue_free()
-	window_rect = preload("res://WindowRect.tscn").instance()
-	window_rect.rect_position = Vector2(outline_width / 2 + window_margin, outline_width / 2 + floor_margin)
-	window_rect.rect_size = rect_size - Vector2(2 * outline_width + 2 * window_margin, 2 * outline_width + 2 * floor_height)
-	window_rect.rng_seed = rng_seed
-	window_rect.fill_rate = fill_rate
-	window_rect.window_color = window_color
-	window_rect.window_width = window_width
-	window_rect.floor_height = floor_height
-	window_rect.floor_margin = floor_margin
-	call_deferred('add_child', window_rect)
+	if window_rects != []:
+		for wr in window_rects:
+			wr.queue_free()
+	var sections: int
+	if rect_size.y < 400:
+		sections = 1
+	elif rect_size.y < 500:
+		sections = rng.randi_range(1, 2)
+	else:
+		sections = rng.randi_range(1, 3)
+	
+	var heights := []
+	var widths := []
+	if sections == 1:
+		heights.append(rect_size.y)
+		widths.append(rect_size.x)
+	elif sections == 2:
+		var h1 = rect_size.y / rng.randf_range(3, 5)
+		var h2 = rect_size.y - h1
+		heights.append_array([h1, h2])
+		
+		var w2 = rect_size.x
+		var w1 = rect_size.x / rng.randf_range(1.5, 4.0)
+		widths.append_array([w1, w2])
+	else:
+		var h1 = rect_size.y / rng.randf_range(1.5, 4.0)
+		var h2 = (rect_size.y - h1) / rng.randf_range(1.5, 4.0)
+		var h3 = rect_size.y - h1 - h2
+		heights.append_array([h1, h2, h3])
+		
+		var w3 = rect_size.x
+		var w2 = rect_size.x / rng.randf_range(1.5, 4.0)
+		var w1 = w2 / rng.randf_range(1.5, 4.0)
+		widths.append_array([w1, w2, w3])
+	
+	var y = 0.0
+	for i in range(sections):
+		var wr = preload("res://WindowRect.tscn").instance()
+		var x = rect_size.x / 2.0 - widths[i] / 2.0
+		wr.rect_position = Vector2(x + outline_width / 2 + window_margin, y + outline_width / 2 + floor_margin)
+		wr.rect_size = Vector2(widths[i] - 2 * outline_width - 2 * window_margin, heights[i] - 2 * outline_width - 2 * floor_height)
+		wr.rng_seed = rng_seed
+		wr.fill_rate = fill_rate
+		wr.window_color = window_color
+		wr.window_width = window_width
+		wr.floor_height = floor_height
+		wr.floor_margin = floor_margin
+		call_deferred('add_child', wr)
+		section_rects.append(Rect2(x, y, widths[i], heights[i]))
+		y += heights[i]
 	
 	# redraw
 	update()
@@ -49,13 +88,23 @@ func _draw():
 	if not initialized:
 		return
 	
-	var rect = Rect2(outline_width / 2, outline_width / 2, rect_size.x - outline_width, rect_size.y - outline_width)
-	draw_rect(rect, background_color, true)
-	draw_rect(rect, outline_color, false, outline_width, antialiased)
-	
-	rect.position += Vector2(outline_width / 2, outline_width / 2)
-	rect.size -= Vector2(outline_width, outline_width)
-
+	for i in range(len(section_rects) - 1, -1, -1):
+		var dx = Vector2(outline_width / 2, 0)
+		var dy = Vector2(0, outline_width / 2)
+		var r: Rect2 = section_rects[i]
+		r.position += dx + dy
+		r.size -= dx - dy
+		draw_rect(r, background_color, true)
+		
+		var topleft = r.position
+		var topright = r.position + Vector2(r.size.x, 0)
+		var bottomleft = r.position + Vector2(0, r.size.y)
+		var bottomright = r.position + r.size
+		draw_line(topleft, bottomleft, outline_color, outline_width)
+		draw_line(topleft - dx, topright + dx, outline_color, outline_width)
+		draw_line(topright, bottomright, outline_color, outline_width)
+		if i == len(section_rects) - 1:
+			draw_line(bottomleft + dx, bottomright - dx, Color.black, outline_width)
 
 
 func _on_Building_resized():
@@ -121,9 +170,9 @@ func set_window_color(value: Color):
 	window_color = value
 	update()
 	
-	if window_rect:
-		window_rect.window_color = value
-		window_rect.update()
+	for wr in window_rects:
+		wr.window_color = value
+		wr.update()
 
 
 func set_background_color(value: Color):

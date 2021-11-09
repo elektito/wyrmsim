@@ -4,6 +4,7 @@ const ROT_SPEED := 1.5
 const BLOCK_SIZE := 5000.0
 const BUILDING_MIN_WIDTH := 60.0
 const BUILDING_MAX_WIDTH := 300.0
+const BUILDING_OUTLINE_WIDTH := 3.0
 
 onready var camera := $Wyrm/Segment1/camera
 
@@ -167,7 +168,7 @@ func fill_block(bx: float):
 	while x < bx + BLOCK_SIZE:
 		var max_width = min(BUILDING_MAX_WIDTH, remaining_width)
 		var width = rng.randf_range(BUILDING_MIN_WIDTH, max_width)
-		remaining_width -= width
+		remaining_width -= width - BUILDING_OUTLINE_WIDTH / 2 # subtract half outline width because we do that to building.x too
 		if remaining_width > 0 and remaining_width < BUILDING_MIN_WIDTH:
 			# we might go a bit above max width, but we won't have next building too narrow (and thus unrenderable)
 			width += remaining_width
@@ -176,7 +177,7 @@ func fill_block(bx: float):
 		var collectible = generate_collectible(building)
 		if collectible != null:
 			call_deferred('add_child', collectible)
-		x += width
+		x += width - BUILDING_OUTLINE_WIDTH / 2 # subtract half outline width so that they slightly overlap and only one line is drawn between two buildings and it's not double thick
 		if bx in block_buildings:
 			block_buildings[bx].append(building)
 		else:
@@ -199,7 +200,7 @@ func generate_building(x: float, width: float):
 	var b = preload("res://Building.tscn").instance()
 	b.rng_seed = seed_value
 	b.fill_rate = rng.randf_range(0.04, 0.5)
-	b.outline_width = 3
+	b.outline_width = BUILDING_OUTLINE_WIDTH
 	b.outline_color = Color(0.2, 0.2, 0.2)
 	b.window_margin = 5
 	var floors = 5 + rng.randi() % 100

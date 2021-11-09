@@ -54,6 +54,8 @@ func init():
 	# now turn on some of the lights
 	var total_lit := 0
 	for f in range(floors):
+		if windows_per_floor <= 0:
+			continue
 		var cur_fill_rate = float(total_lit) / (windows_per_floor * (f + 1))
 		var style = rng.randf()
 		if cur_fill_rate < fill_rate:

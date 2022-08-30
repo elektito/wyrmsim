@@ -47,7 +47,7 @@ func init():
 	for i in range(floors):
 		windows.append([])
 		darkness.append([])
-		for j in range(windows_per_floor):
+		for _j in range(windows_per_floor):
 			windows[i].append(false)
 			darkness[i].append(rng.randf_range(0.0, 1.0))
 	
@@ -73,7 +73,7 @@ func init():
 				total_lit += length
 			elif style < 0.5:
 				var filled := 0
-				for x in range(2):
+				for _x in range(2):
 					var length = rng.randi() % (windows_per_floor - filled)
 					var start = rng.randi() % (windows_per_floor - filled - length)
 					for i in range(length):
@@ -90,7 +90,7 @@ func init():
 	# sometimes empty out columns of windows to suggest vertical windowless areas
 	if rng.randf() < 0.5:
 		var columns : int = rng.randi() % 2 + 1
-		for i in range(columns):
+		for _i in range(columns):
 			var w = rng.randi() % windows_per_floor
 			for f in range(floors):
 				windows[f][w] = false
@@ -104,7 +104,7 @@ func init():
 			windows[floors - 1 - i][w] = false
 	
 	# randomly turn off some whole floors
-	for i in range(0, rng.randi_range(0, fill_rate * floors)):
+	for _i in range(0, rng.randi_range(0, fill_rate * floors)):
 		var f1 = rng.randi() % floors
 		var f2 = f1 + 1 + rng.randi_range(0, log(floors))
 		if f2 >= floors:

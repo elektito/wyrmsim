@@ -27,7 +27,7 @@ func _ready():
 	$music.play()
 
 
-func _input(event):
+func _input(_event):
 	if Input.is_action_just_pressed("pause"):
 		toggle_pause()
 	if Input.is_action_just_pressed("add_segment"):
@@ -76,7 +76,7 @@ func _physics_process(delta):
 			$Wyrm/Segment1.rotate(desired_rotation_speed * delta)
 
 
-func _process(delta):
+func _process(_delta):
 	if single_stepping:
 		pause()
 		single_stepping = false

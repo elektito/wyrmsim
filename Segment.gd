@@ -8,7 +8,7 @@ export(float) var speed := 500.0
 export(bool) var show_debug = false setget set_show_debug
 export(float) var max_acceleration := 100.0
 export(float) var min_speed := 300.0
-export(float) var max_speed := 700
+export(float) var max_speed := 700.0
 
 var leading_node : Node2D = null
 var original_distance := 0.0

@@ -19,11 +19,11 @@ func _physics_process(delta):
 	$sprite.modulate = Color.gray * phase
 
 
-func _on_Collectible_area_entered(area):
+func _on_Collectible_area_entered(_area):
 	collect()
 
 
-func _on_Collectible_body_entered(body):
+func _on_Collectible_body_entered(_body):
 	collect()
 
 

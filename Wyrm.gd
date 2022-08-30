@@ -71,5 +71,5 @@ func get_segments():
 	return segments
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	update_poly()
